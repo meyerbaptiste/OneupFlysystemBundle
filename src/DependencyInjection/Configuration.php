@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Oneup\FlysystemBundle\DependencyInjection;
 
+use League\Flysystem\Config;
 use League\Flysystem\Visibility;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -72,8 +73,15 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('mount')->defaultNull()->end()
                         ->scalarNode('visibility')
                             ->validate()
-                            ->ifNotInArray($supportedVisibilities)
-                            ->thenInvalid('The visibility %s is not supported.')
+                                ->ifNotInArray($supportedVisibilities)
+                                ->thenInvalid('The visibility %s is not supported.')
+                            ->end()
+                        ->end()
+                        ->scalarNode('directory_visibility')
+                            ->validate()
+                                ->ifNotInArray($supportedVisibilities)
+                                ->thenInvalid('The visibility %s is not supported.')
+                            ->end()
                         ->end()
                     ->end()
                 ->end()
